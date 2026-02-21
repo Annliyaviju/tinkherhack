@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GenAI STEM Mentor</title>
+    <style>
+        body{font-family:Arial;background:#f7f7fb;padding:30px;}
+        .card{background:white;padding:20px;margin-top:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+        button{padding:10px 20px;background:#7c4dff;color:white;border:none;border-radius:8px;cursor:pointer;}
+        button:hover{background:#5e35b1;}
+        select,label{display:block;margin-top:10px;}
+        .xpbar{height:10px;background:#ddd;border-radius:10px;margin-top:5px;}
+        .xpfill{height:10px;background:#7c4dff;border-radius:10px;}
+    </style>
+</head>
+<body>
+
+<h2>🎓 GenAI Skill Gap Analyzer for Girls in STEM</h2>
+
+<div class="card">
+    <label>STEM Domain</label>
+    <select id="domain" onchange="updateCareers()">
+        <option>Science</option>
+        <option>Technology</option>
+        <option>Engineering</option>
+        <option>Mathematics</option>
+    </select>
+
+    <label>Career</label>
+    <select id="career" onchange="updateSkills()"></select>
+
+    <label>Select Skills</label>
+    <div id="skillsBox"></div>
+
+    <br>
+    <button onclick="analyze()">Analyze</button>
+</div>
+
+<div id="dashboard"></div>
+
+<script>
+
+const careersByDomain={
+    Science:["Research Scientist","Biotechnologist"],
+    Technology:["AI Engineer","Data Scientist","Web Developer"],
+    Engineering:["Robotics Engineer","Mechanical Engineer"],
+    Mathematics:["Statistician","Data Analyst"]
+};
+
+const skillsByCareer={
+    "AI Engineer":["Python","Machine Learning","Math","TensorFlow"],
+    "Data Scientist":["Python","SQL","Statistics","Visualization"],
+    "Web Developer":["HTML","CSS","JavaScript","Git"],
+    "Research Scientist":["Math","Research","Data Analysis"],
+    "Biotechnologist":["Biology","Lab Skills","Research"],
+    "Robotics Engineer":["Python","Electronics","Control Systems"],
+    "Mechanical Engineer":["CAD","Physics","Math"],
+    "Statistician":["Statistics","R","Data Analysis"],
+    "Data Analyst":["Excel","SQL","Visualization"]
+};
+
+function updateCareers(){
+    let domain=document.getElementById("domain").value;
+    let careerDropdown=document.getElementById("career");
+    careerDropdown.innerHTML="";
+    careersByDomain[domain].forEach(c=>{
+        let opt=document.createElement("option");
+        opt.text=c;
+        careerDropdown.add(opt);
+    });
+    updateSkills();
+}
+
+function updateSkills(){
+    let career=document.getElementById("career").value;
+    let box=document.getElementById("skillsBox");
+    box.innerHTML="";
+    skillsByCareer[career].forEach(skill=>{
+        box.innerHTML+=`<label><input type="checkbox" value="${skill}"> ${skill}</label>`;
+    });
+}
+
+function analyze(){
+    console.log("Analyze button clicked");
+    let domain=document.getElementById("domain").value;
+    let career=document.getElementById("career").value;
+
+    let skills=[];
+    document.querySelectorAll("#skillsBox input:checked").forEach(x=>{
+        skills.push(x.value);
+    });
+
+    fetch("http://127.0.0.1:5000/analyze",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            domain:domain,
+            career:career,
+            skills:skills
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+
+        let xpPercent=(data.xp%100);
+
+        document.getElementById("dashboard").innerHTML=
+        `<div class="card">
+            <h3>📊 Progress Dashboard</h3>
+            <p>🎯 Readiness: ${data.readiness}%</p>
+            <p>⭐ XP: ${data.xp}</p>
+            <p>🏆 Level: ${data.level}</p>
+            <p>⚠ Missing Skills: ${data.missing.join(", ")}</p>
+            <div class="xpbar"><div class="xpfill" style="width:${xpPercent}%"></div></div>
+        </div>
+
+        <div class="card">
+            <h3>🤖 AI Mentor Advice</h3>
+            <p>${data.ai_text}</p>
+        </div>`;
+    })
+    .catch(err=>console.error("Fetch error:", err));
+}
+
+updateCareers();
+
+</script>
+
+</body>
+</html>

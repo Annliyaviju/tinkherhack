@@ -1,0 +1,11 @@
+{
+  "AI Engineer": ["Python", "Machine Learning", "Math", "TensorFlow"],
+  "Data Scientist": ["Python", "SQL", "Statistics", "Visualization"],
+  "Web Developer": ["HTML", "CSS", "JavaScript", "Git"],
+  "Research Scientist": ["Math", "Research", "Data Analysis"],
+  "Biotechnologist": ["Biology", "Lab Skills", "Research"],
+  "Robotics Engineer": ["Python", "Electronics", "Control Systems"],
+  "Mechanical Engineer": ["CAD", "Physics", "Math"],
+  "Statistician": ["Statistics", "R", "Data Analysis"],
+  "Data Analyst": ["Excel", "SQL", "Visualization"]
+}
