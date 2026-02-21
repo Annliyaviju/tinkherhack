@@ -1,1 +1,10 @@
-a website which gives information and guidness throughout our career in a fun and creative way.we select our career and it tells us about the career path in a game level up way
+This project is a web-based platform designed to support girls pursuing careers in STEM by helping them identify skill gaps, track their learning progress, and receive personalized guidance through Generative AI.
+
+The system allows users to select a STEM domain, choose a career path, and input their current skills. Based on this information, the platform analyzes readiness levels, highlights missing competencies, and provides an AI-generated learning roadmap, gamified missions, and motivational guidance.
+
+To make the learning journey engaging, the application incorporates a game-like experience using XP points, levels, and progress indicators. This approach encourages continuous improvement while helping students clearly understand the steps required to achieve their career goals.
+
+The project integrates a Flask backend for skill analysis and AI interaction, along with a responsive frontend interface for user input and visualization of results. By combining career guidance, AI mentoring, and gamification, the platform aims to empower more girls to confidently pursue opportunities in STEM fields.
+
+
+https://tinkherhack-8n0i.onrender.com
